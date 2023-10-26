@@ -14,10 +14,22 @@ GitVerify is a tool designed to analyze GitHub repositories and provide insights
 
 ## Key Features:
 
-- **Metadata Verification**: Verifies age of the repository; whether it is archived or disabled, subscribers, stars and watchers count, among other items.
-- **Contributors Verification**: Analyzes contributors to the repository, checking account creation time, count of followers, additional repositories, and more.
-- **Issues and PRs Verification**: Scans through issues and pull requests to verify if they were only created by contributors, and potentially more checks in the future.
-- **Domain Verification (with VirusTotal)**: Optionally performs a scan on domains associated with the repository using the VirusTotal API to ensure they aren't flagged as malicious.
+- **Metadata Verification** (modules/verify_metadata.py):
+  - Analyzes the age of the repository. If the repository is too new then it could likely be a replica or copy of the repository you or your team intends to use.
+  - It also checks if the repository is archived or disabled. Cloning and using an archived/disabled repository may lead to using old/vulnerable/deprecated code.
+  - It checks if the repository is owned by a person or an organization. Creating organizations is pretty straightforward, hence org-owned repositories aren’t necessarily a signal of reliability.
+  - Checks the number of subscribers, stars, and watchers against the amount of repository contributors. This can later be improved to check if the subscribers, stars, and watchers are exactly the same identities as the contributors instead of merely relying on numbers.
+
+- **Contributors Verification** (modules/verify_contributors.py):
+  - Checks if the contributor has other public repositories than the one being verified. Lack of other repositories isn’t a bad thing, but it certainly gives you more context.
+  - Examines the account creation time of contributors. A recently created account might be less reliable than a contributor with a longer history in GitHub.
+  - It also checks the amount of followers each of the contributors have. We’re considering you might use gitverify for potentially reliable projects, therefore the idea being you’re going to spot fake or incorrect repositories before you use them.
+
+- **Issues and PRs Verification** (modules/verify_issues_prs.py):
+  - Scans through issues and pull requests to validate if they were only created by contributors. To the human eye, a project with Issues and Pull Requests might seem more reliable than one which has none; which is why we’re trying to catch potential ‘fake activity’ this way.
+
+- **Domain Verification** (modules/verify_domains.py):
+  - Extracts using GitHub’s Code API a list of domains and (optionally) scans them using the VirusTotal API to detect any flagged by the community as dangerous. The extraction logic is quite simple and can be further enhanced.
 
 ## Important: Environment Variables Configuration
 
