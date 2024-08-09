@@ -1,5 +1,7 @@
 # GitVerify
 
+## If you're looking for Gitxray, head over to: https://github.com/kulkansecurity/gitxray/
+
 GitVerify is a tool designed to analyze GitHub repositories and provide insights into their trustworthiness. It gathers data from the GitHub API and, optionally, performs VirusTotal checks on associated domains, then presents the results in a concise manner. Supported output formats include: text, json, csv.
 
 <p align="center">
